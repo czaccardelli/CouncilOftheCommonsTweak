@@ -12,9 +12,12 @@ namespace CouncilOfTheCommonsTweak
             float influenceChange = 0f;
             if(clan.Kingdom != null)
             {
-                clan.Kingdom.ActivePolicies.Remove(DefaultPolicies.CouncilOfTheCommons);
-                influenceChange = base.CalculateInfluenceChange(clan, explanation);
-                clan.Kingdom.ActivePolicies.Add(DefaultPolicies.CouncilOfTheCommons);
+                //remove and then re-add policy before calculating influence change if it exists within kingdom
+                if(clan.Kingdom.ActivePolicies.Remove(DefaultPolicies.CouncilOfTheCommons))
+                {
+                    influenceChange = base.CalculateInfluenceChange(clan, explanation);
+                    clan.Kingdom.ActivePolicies.Add(DefaultPolicies.CouncilOfTheCommons);
+                }
             }    
             return influenceChange;
         }
